@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Pythagorean Theorem</title>
+		<!-- <link
+			rel="stylesheet"
+			href="./my_junctions/css_junction/reset.css"
+		/> -->
+		<!-- <link
+			rel="stylesheet"
+			href="./css/pythagoras.css"
+		/> -->
+		<link
+			rel="stylesheet"
+			href="./css/scene.css"
+		/>
+		<!-- <script
+			type="module"
+			src="pythagoras.js"
+		></script> -->
+	</head>
+	<body>
+		<!-- <geometry-canvas></geometry-canvas> -->
+		<div class="app">
+			<header>
+				<div class="header_logo"></div>
+				<div class="header_text">
+					<h1>Pythagorean Theorem</h1>
+					<p class="subtitle">Interactive geometry lesson</p>
+				</div>
+			</header>
+			<div class="scene">
+				<div class="scene_box">
+					<section
+						id="theory"
+						data-border="color_1"
+						data-grid_area="left"
+					>
+						<h2>Theory</h2>
+						<p>
+							In a right triangle with legs <b>a</b> and <b>b</b> and hypotenuse
+							<b>c</b>:<br />
+							<b>a² + b² = c²</b>
+						</p>
+					</section>
+
+					<section
+						id="demo"
+						data-border="color_2"
+						data-grid_area="center"
+					>
+						<h2>Interactive Example</h2>
+						<canvas id="pyCanvas"></canvas>
+
+						<div class="controls">
+							<label>
+								a:
+								<input
+									id="sideA"
+									type="range"
+									min="50"
+									max="200"
+									value="120"
+								/>
+							</label>
+							<label>
+								b:
+								<input
+									id="sideB"
+									type="range"
+									min="50"
+									max="200"
+									value="160"
+								/>
+							</label>
+						</div>
+					</section>
+
+					<section
+						id="exercise"
+						data-border="color_3"
+						data-grid_area="right"
+					>
+						<h2>Exercise</h2>
+						<p>Given a = 3, b = 4, what is c?</p>
+						<input
+							type="number"
+							id="answer"
+							placeholder="Your answer"
+						/>
+						<button id="checkBtn">Check</button>
+						<p id="feedback"></p>
+					</section>
+				</div>
+			</div>
+
+			<footer class="footer">
+				<p>Next Lesson</p>
+			</footer>
+		</div>
+	</body>
+	<script>
+		// function syncSize() {
+		// clientWidth is the width currently rendered by CSS (the 90%)
+		// pyCanvas.width = pyCanvas.clientWidth;
+		// pyCanvas.height = pyCanvas.clientWidth * 0.5; // Example 2:1 ratio
+		// }
+		// window.addEventListener("resize", syncSize);
+	</script>
+	<script
+		type="module"
+		src="./js/pythagoras.js"
+	></script>
+	<!-- <script
+		type="module"
+		src="./node_modules/@local/nodejs_helpers/src/tools/scan_html.js"
+	></script> -->
+	<!-- <script
+		type="module"
+		src="./node_modules/@local/nodejs_helpers/src/tools/build_dom_tree.js"
+	></script> -->
+	<!-- <script
+		type="module"
+		src="./node_modules/@local/transformations/src/make3dCube.js"
+	></script>
+	<script
+		type="module"
+		src="./node_modules/@local/nodejs_helpers/src/tools/scan_html.js"
+	>
+		import { scanHtml } from "./node_modules/@local/nodejs_helpers/src/tools/scan_html.js";
+		scanHtml();
+	</script> -->
+</html>

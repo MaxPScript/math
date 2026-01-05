@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Info</title>
+	</head>
+	<style>
+		span {
+			background: darkgrey;
+		}
+	</style>
+	<body>
+		<h1>
+			Workflow with <span>NTFS junctions</span> (directory symbolic links or
+			technically reparse points)
+		</h1>
+		<div class="link">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				fill="none"
+				aria-hidden="true"
+				viewBox="0 0 25 25"
+				width="25"
+			>
+				<path
+					fill="#f25022"
+					d="M11.522.5H0v11.407h11.522z"
+				/>
+				<path
+					fill="#7fba00"
+					d="M24.242.5H12.72v11.407h11.522z"
+				/>
+				<path
+					fill="#00a4ef"
+					d="M11.522 13.093H0V24.5h11.522z"
+				/>
+				<path
+					fill="#ffb900"
+					d="M24.242 13.093H12.72V24.5h11.522z"
+				/>
+			</svg>
+			<a
+				href="https://learn.microsoft.com/en-us/windows/win32/fileio/hard-links-and-junctions"
+				>hard-links-and-junctions</a
+			>
+		</div>
+		<ol>
+			<li>Open cmd on a root? level of the web app.</li>
+			<li>
+				Type <br />
+				<code>
+					mklink /J photos C:\Users\Acer\Documents\my_web_dev_libs\photobank
+				</code>
+				<br />
+				The folder "photos" should not exist.
+			</li>
+			<li>
+				The folder "photos" is now visible at the root level of the web app.
+			</li>
+			<li>
+				To delete (remove) this junction type <br />
+				<code>rmdir photos</code>
+			</li>
+		</ol>
+	</body>
+</html>

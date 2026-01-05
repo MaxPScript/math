@@ -1,0 +1,128 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+html,
+body {
+	height: 100%;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+		Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+body {
+	background: hsl(36 100 90 / 1);
+	display: grid;
+	grid-template-rows: min-content 1fr min-content;
+}
+header,
+footer {
+	text-align: center;
+}
+.cube3D {
+	.scene {
+		width: 300px;
+		height: 200px;
+		perspective: 200px;
+		margin: auto;
+	}
+
+	.box {
+		width: 300px;
+		height: 200px;
+		position: relative;
+		transform-style: preserve-3d;
+		transform: translateZ(-50px);
+		.box__face {
+			position: absolute;
+			color: white;
+			font-size: 2em;
+			display: grid;
+			place-content: center;
+			opacity: 0.5;
+		}
+		transition: 5s;
+	}
+
+	.box__face--front,
+	.box__face--back {
+		width: 300px;
+		height: 200px;
+	}
+
+	.box__face--right,
+	.box__face--left {
+		width: 100px;
+		height: 200px;
+		left: 100px;
+	}
+
+	.box__face--top,
+	.box__face--bottom {
+		width: 300px;
+		height: 100px;
+		top: 50px;
+	}
+	/* transformations */
+	.box__face--front {
+		transform: rotateY(0deg) translateZ(50px);
+	}
+	.box__face--back {
+		transform: rotateY(180deg) translateZ(50px);
+	}
+
+	.box__face--right {
+		transform: rotateY(90deg) translateZ(150px);
+	}
+	.box__face--left {
+		transform: rotateY(-90deg) translateZ(150px);
+	}
+
+	.box__face--top {
+		transform: rotateX(90deg) translateZ(100px);
+	}
+	.box__face--bottom {
+		transform: rotateX(-90deg) translateZ(100px);
+	}
+	/* ... */
+	/* .box.show-front {
+		transform: translateZ(-50px) rotateY(0deg);
+	} */
+	/* .box.show-back {
+		transform: translateZ(-50px) rotateY(-180deg);
+	} */
+	/* .box.show-right {
+		transform: translateZ(-150px) rotateY(-90deg);
+	} */
+	/* .box.show-left {
+		transform: translateZ(-150px) rotateY(90deg);
+	} */
+	/* .box.show-top {
+        transform: translateZ(-100px) rotateX(-90deg);
+	} */
+	/* .box.show-bottom {
+		transform: translateZ(-100px) rotateX(90deg);
+	} */
+	/* ... */
+	fieldset {
+		display: flex;
+		justify-content: space-evenly;
+	}
+	.front {
+		transform: translateZ(-50px) rotateY(0deg);
+	}
+	.back {
+		transform: rotateY(180deg) translateZ(50px);
+	}
+	.right {
+		transform: translateZ(-150px) rotateY(-90deg);
+	}
+	.left {
+		transform: translateZ(-150px) rotateY(90deg);
+	}
+	.top {
+		transform: translateZ(-100px) rotateX(-90deg);
+	}
+	.bottom {
+		transform: translateZ(-100px) rotateX(90deg);
+	}
+}

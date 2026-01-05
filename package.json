@@ -1,0 +1,17 @@
+{
+	"name": "pythagorean_theorem_app",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"type": "module",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"packageManager": "pnpm@10.22.0",
+	"dependencies": {
+		"my_web_dev_libs": "link:C:/Users/Acer/Documents/my_web_dev_libs"
+	}
+}
