@@ -1,27 +1,173 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Pythagorean Theorem</title>
-	<link rel="stylesheet" href="./css/reset.css">
-	<link rel="stylesheet" href="./css/main_2.css">
-	<link rel="stylesheet" href="./css/utils.css">
-</head>
-<body>
-	<div class="app">
-		<header class="header">
-			<h1 class="header_h1">Pythagorean Theorem</h1>
-		</header>
-		<main class="main">
-			<section class="intro dev_border"></section>
-			<section class="definition dev_border"></section>
-			<section class="assesments dev_border"></section>
-		</main>
-		<footer class="footer">
-			<p>&copy; 2026 MaxMov Geometry WebDev. All rights reserved.</p>
-		</footer>
-	</div>
-</body>
-<script src="./js/app.js"></script>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Living Pythagorean Tablet</title>
+
+		<style>
+			:root {
+				--papyrus: #f4f1ea;
+				--ink: #1e1b16;
+				--gold: #b08d57;
+				--chalk: #e8e4d8;
+			}
+
+			/* ====== PAGE ====== */
+			body {
+				margin: 0;
+				background: #111;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				height: 100vh;
+			}
+
+			/* ====== SCENE ====== */
+			.scene {
+				position: relative;
+				width: 1000px;
+				aspect-ratio: 4 / 3;
+			}
+
+			/* Static manuscript */
+			.background {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				display: block;
+			}
+
+			/* ====== HOTSPOT ====== */
+			.hotspot {
+				position: absolute;
+				pointer-events: auto;
+			}
+
+			/* Triangle area — adjust to image */
+			.triangle-zone {
+				left: 32%;
+				top: 30%;
+				width: 36%;
+				height: 38%;
+			}
+
+			/* ====== INTERACTIVE LAYER ====== */
+			.interactive {
+				position: absolute;
+				inset: 0;
+				background: rgba(20, 20, 20, 0.95);
+				border: 1px solid var(--gold);
+				opacity: 0;
+				transform: scale(0.98);
+				transition:
+					opacity 0.4s ease,
+					transform 0.4s ease;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+			}
+
+			/* awaken */
+			.hotspot:hover .interactive {
+				opacity: 1;
+				transform: scale(1);
+			}
+
+			/* ====== CANVAS ====== */
+			canvas {
+				background: #1b1b1b;
+				border: 1px solid #555;
+			}
+
+			/* ====== CONTROLS ====== */
+			.controls {
+				margin-top: 12px;
+				background: var(--papyrus);
+				padding: 10px 14px;
+				border: 1px solid var(--gold);
+				font-family: serif;
+			}
+
+			label {
+				margin-right: 8px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="scene">
+			<!-- YOUR GENERATED IMAGE -->
+			<img
+				class="background"
+				src="./assets/img/layout.png"
+			/>
+
+			<!-- TRIANGLE HOTSPOT -->
+			<div class="hotspot triangle-zone">
+				<div class="interactive">
+					<canvas
+						id="tri"
+						width="300"
+						height="220"
+					></canvas>
+
+					<div class="controls">
+						<label
+							>a:
+							<input
+								type="range"
+								min="40"
+								max="140"
+								value="80"
+								id="a"
+							/>
+						</label>
+						<label
+							>b:
+							<input
+								type="range"
+								min="40"
+								max="140"
+								value="60"
+								id="b"
+							/>
+						</label>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			const canvas = document.getElementById("tri");
+			const ctx = canvas.getContext("2d");
+
+			const aInput = document.getElementById("a");
+			const bInput = document.getElementById("b");
+
+			function draw() {
+				const a = +aInput.value;
+				const b = +bInput.value;
+
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+				ctx.strokeStyle = "#e8e4d8";
+				ctx.lineWidth = 2;
+
+				ctx.beginPath();
+				ctx.moveTo(40, 180);
+				ctx.lineTo(40 + b, 180);
+				ctx.lineTo(40, 180 - a);
+				ctx.closePath();
+				ctx.stroke();
+
+				ctx.fillStyle = "#e8e4d8";
+				ctx.fillText("a", 20, 180 - a / 2);
+				ctx.fillText("b", 40 + b / 2, 200);
+			}
+
+			aInput.oninput = bInput.oninput = draw;
+			draw();
+		</script>
+	</body>
 </html>

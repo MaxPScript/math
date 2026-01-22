@@ -1,282 +1,278 @@
-class PythagoreanLesson {
-    constructor() {
-        this.canvas = document.getElementById('triangleCanvas');
-        this.ctx = this.canvas.getContext('2d');
-        this.sideA = 3;
-        this.sideB = 4;
-        this.currentTheme = 'default';
-        this.init();
-    }
+// export function adjustSize(el, angle)
+import { adjustSize } from "./helpers/css.transforms/adjust_size.js";
+// const el = document.getElementById("intro_p1_id");
+// adjustSize(el, 80);
+//
+class PythagoreanTheoremApp {
+	constructor(canvasId) {
+		this.canvas = document.getElementById(canvasId);
+		if (!this.canvas) {
+			throw new Error(`Canvas element with id '${canvasId}' not found`);
+		}
 
-    init() {
-        this.setupEventListeners();
-        this.drawTriangle();
-        this.updateCalculation();
-        this.loadThemePreference();
-    }
+		this.ctx = this.canvas.getContext("2d");
+		this.POINT_RADIUS = 6;
+		this.DRAG_THRESHOLD = this.POINT_RADIUS * 2;
 
-    setupEventListeners() {
-        // Theme switcher
-        document.querySelectorAll('.theme-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                this.switchTheme(e.target.dataset.theme);
-            });
-        });
+		this.origin = { x: 100, y: 220 };
+		this.pointA = { x: 260, y: 220 };
+		this.pointB = { x: 100, y: 80 };
+		this.draggingPoint = null;
+		this.hoveredPoint = null;
 
-        // Slider controls
-        const sideASlider = document.getElementById('sideA');
-        const sideBSlider = document.getElementById('sideB');
-        
-        sideASlider.addEventListener('input', (e) => {
-            this.sideA = parseFloat(e.target.value);
-            document.getElementById('sideAValue').textContent = this.sideA;
-            this.drawTriangle();
-            this.updateCalculation();
-            this.addInteractiveState(e.target);
-        });
+		this.colors = {
+			origin: "#000",
+			pointA: "#1a73e8",
+			pointB: "#e8711a",
+			triangle: "#222",
+			text: "#000",
+			hover: "#ff6b6b",
+		};
 
-        sideBSlider.addEventListener('input', (e) => {
-            this.sideB = parseFloat(e.target.value);
-            document.getElementById('sideBValue').textContent = this.sideB;
-            this.drawTriangle();
-            this.updateCalculation();
-            this.addInteractiveState(e.target);
-        });
+		this.init();
+	}
 
-        // Calculator
-        document.getElementById('calculateBtn').addEventListener('click', (e) => {
-            this.calculateHypotenuse();
-            this.addInteractiveState(e.target);
-        });
+	init() {
+		this.setupEventListeners();
+		this.setupCanvas();
+		this.draw();
+	}
 
-        // Practice problems
-        document.querySelectorAll('.check-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const problemNum = e.target.dataset.problem;
-                this.checkAnswer(problemNum);
-                this.addInteractiveState(e.target);
-            });
-        });
+	setupCanvas() {
+		const resizeCanvas = () => {
+			const rect = this.canvas.getBoundingClientRect();
+			const dpr = window.devicePixelRatio || 1;
 
-        // Add interactive states to all interactive elements
-        document.querySelectorAll('.interactive-element').forEach(element => {
-            element.addEventListener('focus', (e) => this.addInteractiveState(e.target));
-            element.addEventListener('blur', (e) => this.removeInteractiveState(e.target));
-            element.addEventListener('mouseenter', (e) => this.addInteractiveState(e.target));
-            element.addEventListener('mouseleave', (e) => this.removeInteractiveState(e.target));
-        });
+			this.canvas.width = rect.width * dpr;
+			this.canvas.height = rect.height * dpr;
+			this.ctx.scale(dpr, dpr);
 
-        // Allow Enter key for calculator
-        ['calcA', 'calcB'].forEach(id => {
-            document.getElementById(id).addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    this.calculateHypotenuse();
-                    this.addInteractiveState(e.target);
-                }
-            });
-        });
-    }
+			this.canvas.style.width = rect.width + "px";
+			this.canvas.style.height = rect.height + "px";
 
-    switchTheme(themeName) {
-        // Remove all theme classes
-        document.body.classList.remove('theme-warm', 'theme-classical', 'theme-royal');
-        
-        // Add new theme class if not default
-        if (themeName !== 'default') {
-            document.body.classList.add(`theme-${themeName}`);
-        }
-        
-        // Update active button
-        document.querySelectorAll('.theme-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        document.querySelector(`[data-theme="${themeName}"]`).classList.add('active');
-        
-        // Save preference
-        this.currentTheme = themeName;
-        localStorage.setItem('pythagorean-theme', themeName);
-        
-        // Redraw canvas with new theme colors
-        this.drawTriangle();
-    }
+			this.draw();
+		};
 
-    loadThemePreference() {
-        const savedTheme = localStorage.getItem('pythagorean-theme');
-        if (savedTheme && savedTheme !== 'default') {
-            this.switchTheme(savedTheme);
-        }
-    }
+		resizeCanvas();
+		window.addEventListener("resize", resizeCanvas);
+	}
 
-    addInteractiveState(element) {
-        element.classList.add('active');
-        setTimeout(() => {
-            if (element.matches(':focus') || element.matches(':hover')) {
-                element.classList.add('active');
-            }
-        }, 10);
-    }
+	setupEventListeners() {
+		this.canvas.addEventListener("mousedown", this.handleMouseDown.bind(this));
+		this.canvas.addEventListener("mousemove", this.handleMouseMove.bind(this));
+		this.canvas.addEventListener("mouseup", this.handleMouseUp.bind(this));
+		this.canvas.addEventListener(
+			"mouseleave",
+			this.handleMouseLeave.bind(this)
+		);
 
-    removeInteractiveState(element) {
-        if (!element.matches(':focus') && !element.matches(':hover')) {
-            element.classList.remove('active');
-        }
-    }
+		this.canvas.style.cursor = "grab";
+	}
 
-    drawTriangle() {
-        const ctx = this.ctx;
-        const canvas = this.canvas;
-        
-        // Clear canvas
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        // Calculate scale to fit triangle in canvas
-        const padding = 30;
-        const maxSide = Math.max(this.sideA, this.sideB);
-        const scale = (Math.min(canvas.width, canvas.height) - 2 * padding) / maxSide;
-        
-        // Calculate triangle points
-        const x1 = padding;
-        const y1 = canvas.height - padding;
-        const x2 = x1 + this.sideA * scale;
-        const y2 = y1;
-        const x3 = x1;
-        const y3 = y1 - this.sideB * scale;
-        
-        // Get current theme colors
-        const styles = getComputedStyle(document.body);
-        const primaryColor = styles.getPropertyValue('--theme-primary').trim();
-        const secondaryColor = styles.getPropertyValue('--theme-secondary').trim();
-        const accentColor = styles.getPropertyValue('--theme-accent').trim();
-        
-        // Draw triangle
-        ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
-        ctx.lineTo(x3, y3);
-        ctx.closePath();
-        
-        // Fill triangle with subtle color
-        ctx.fillStyle = secondaryColor + '20'; // Add transparency
-        ctx.fill();
-        
-        // Draw triangle outline
-        ctx.strokeStyle = secondaryColor;
-        ctx.lineWidth = 3;
-        ctx.stroke();
-        
-        // Draw right angle indicator
-        const squareSize = 15;
-        ctx.strokeStyle = accentColor;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(x1 + squareSize, y1);
-        ctx.lineTo(x1 + squareSize, y1 - squareSize);
-        ctx.lineTo(x1, y1 - squareSize);
-        ctx.stroke();
-        
-        // Label sides
-        ctx.fillStyle = primaryColor;
-        ctx.font = 'bold 14px Arial';
-        ctx.textAlign = 'center';
-        
-        // Side A label
-        ctx.fillText(`a = ${this.sideA}`, (x1 + x2) / 2, y1 + 20);
-        
-        // Side B label
-        ctx.save();
-        ctx.translate(x1 - 20, (y1 + y3) / 2);
-        ctx.rotate(-Math.PI / 2);
-        ctx.fillText(`b = ${this.sideB}`, 0, 0);
-        ctx.restore();
-        
-        // Hypotenuse label
-        const hypotenuse = Math.sqrt(this.sideA * this.sideA + this.sideB * this.sideB);
-        ctx.save();
-        const midX = (x2 + x3) / 2;
-        const midY = (y2 + y3) / 2;
-        const angle = Math.atan2(y3 - y2, x3 - x2);
-        ctx.translate(midX, midY);
-        ctx.rotate(angle + Math.PI / 2);
-        ctx.fillText(`c = ${hypotenuse.toFixed(2)}`, 0, -8);
-        ctx.restore();
-    }
+	getMousePos(event) {
+		const rect = this.canvas.getBoundingClientRect();
+		return {
+			x: event.clientX - rect.left,
+			y: event.clientY - rect.top,
+		};
+	}
 
-    updateCalculation() {
-        const hypotenuse = Math.sqrt(this.sideA * this.sideA + this.sideB * this.sideB);
-        document.getElementById('sideCValue').textContent = hypotenuse.toFixed(2);
-        
-        // Show verification
-        const verification = document.getElementById('verification');
-        const leftSide = (this.sideA * this.sideA + this.sideB * this.sideB).toFixed(2);
-        const rightSide = (hypotenuse * hypotenuse).toFixed(2);
-        
-        verification.innerHTML = `Verification: ${this.sideA}² + ${this.sideB}² = ${leftSide} ≈ ${rightSide} = ${hypotenuse.toFixed(2)}²`;
-        verification.style.color = '#48bb78';
-    }
+	distance(p1, p2) {
+		return Math.hypot(p1.x - p2.x, p1.y - p2.y);
+	}
 
-    calculateHypotenuse() {
-        const sideA = parseFloat(document.getElementById('calcA').value);
-        const sideB = parseFloat(document.getElementById('calcB').value);
-        const resultDiv = document.getElementById('calcResult');
-        
-        if (isNaN(sideA) || isNaN(sideB) || sideA <= 0 || sideB <= 0) {
-            resultDiv.innerHTML = 'Please enter valid positive numbers for both sides.';
-            resultDiv.style.display = 'block';
-            resultDiv.style.background = '#fed7d7';
-            resultDiv.style.color = '#742a2a';
-            return;
-        }
-        
-        const hypotenuse = Math.sqrt(sideA * sideA + sideB * sideB);
-        resultDiv.innerHTML = `
-            <strong>Result:</strong><br>
-            For a right triangle with sides ${sideA} and ${sideB}:<br>
-            ${sideA}² + ${sideB}² = ${(sideA * sideA).toFixed(2)} + ${(sideB * sideB).toFixed(2)} = ${(sideA * sideA + sideB * sideB).toFixed(2)}<br>
-            √${(sideA * sideA + sideB * sideB).toFixed(2)} = <strong>${hypotenuse.toFixed(2)}</strong><br>
-            The hypotenuse is ${hypotenuse.toFixed(2)} units.
-        `;
-        resultDiv.style.display = 'block';
-        resultDiv.style.background = '#c6f6d5';
-        resultDiv.style.color = '#22543d';
-    }
+	isPointHit(point, mouse) {
+		return this.distance(point, mouse) < this.DRAG_THRESHOLD;
+	}
 
-    checkAnswer(problemNum) {
-        const userAnswer = parseFloat(document.getElementById(`answer${problemNum}`).value);
-        const feedbackDiv = document.getElementById(`feedback${problemNum}`);
-        
-        if (isNaN(userAnswer) || userAnswer <= 0) {
-            feedbackDiv.innerHTML = 'Please enter a valid positive number.';
-            feedbackDiv.className = 'feedback incorrect';
-            feedbackDiv.style.display = 'block';
-            return;
-        }
-        
-        let correctAnswer;
-        let explanation;
-        
-        if (problemNum === '1') {
-            correctAnswer = 10; // √(6² + 8²) = √(36 + 64) = √100 = 10
-            explanation = `6² + 8² = 36 + 64 = 100, so √100 = 10`;
-        } else if (problemNum === '2') {
-            correctAnswer = 13; // √(5² + 12²) = √(25 + 144) = √169 = 13
-            explanation = `5² + 12² = 25 + 144 = 169, so √169 = 13`;
-        }
-        
-        const isCorrect = Math.abs(userAnswer - correctAnswer) < 0.1;
-        
-        if (isCorrect) {
-            feedbackDiv.innerHTML = `✓ Correct! ${explanation}`;
-            feedbackDiv.className = 'feedback correct';
-        } else {
-            feedbackDiv.innerHTML = `✗ Not quite. The correct answer is ${correctAnswer}. ${explanation}`;
-            feedbackDiv.className = 'feedback incorrect';
-        }
-        
-        feedbackDiv.style.display = 'block';
-    }
+	handleMouseDown(event) {
+		const mouse = this.getMousePos(event);
+
+		if (this.isPointHit(this.pointA, mouse)) {
+			this.draggingPoint = this.pointA;
+			this.canvas.style.cursor = "grabbing";
+		} else if (this.isPointHit(this.pointB, mouse)) {
+			this.draggingPoint = this.pointB;
+			this.canvas.style.cursor = "grabbing";
+		}
+	}
+
+	handleMouseMove(event) {
+		const mouse = this.getMousePos(event);
+
+		if (this.draggingPoint) {
+			this.updateDraggingPoint(mouse);
+			this.draw();
+		} else {
+			this.updateHoverState(mouse);
+		}
+	}
+
+	updateDraggingPoint(mouse) {
+		if (this.draggingPoint === this.pointA) {
+			this.pointA.x = Math.max(this.origin.x + 20, mouse.x);
+			this.pointA.y = this.origin.y;
+		} else if (this.draggingPoint === this.pointB) {
+			this.pointB.x = this.origin.x;
+			this.pointB.y = Math.max(20, Math.min(this.origin.y - 20, mouse.y));
+		}
+	}
+
+	updateHoverState(mouse) {
+		const previousHovered = this.hoveredPoint;
+		this.hoveredPoint = null;
+
+		if (this.isPointHit(this.pointA, mouse)) {
+			this.hoveredPoint = this.pointA;
+			this.canvas.style.cursor = "grab";
+		} else if (this.isPointHit(this.pointB, mouse)) {
+			this.hoveredPoint = this.pointB;
+			this.canvas.style.cursor = "grab";
+		} else {
+			this.canvas.style.cursor = "default";
+		}
+
+		if (previousHovered !== this.hoveredPoint) {
+			this.draw();
+		}
+	}
+
+	handleMouseUp() {
+		this.draggingPoint = null;
+		this.canvas.style.cursor = "grab";
+	}
+
+	handleMouseLeave() {
+		this.draggingPoint = null;
+		this.hoveredPoint = null;
+		this.canvas.style.cursor = "default";
+		this.draw();
+	}
+
+	draw() {
+		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+		this.drawTriangle();
+		this.drawRightAngleIndicator();
+		this.drawPoints();
+		this.drawLabels();
+		this.drawMeasurements();
+	}
+
+	drawTriangle() {
+		this.ctx.strokeStyle = this.colors.triangle;
+		this.ctx.lineWidth = 2;
+		this.ctx.beginPath();
+		this.ctx.moveTo(this.origin.x, this.origin.y);
+		this.ctx.lineTo(this.pointA.x, this.pointA.y);
+		this.ctx.lineTo(this.pointB.x, this.pointB.y);
+		this.ctx.closePath();
+		this.ctx.stroke();
+	}
+
+	drawRightAngleIndicator() {
+		const squareSize = 15;
+		this.ctx.strokeStyle = this.colors.triangle;
+		this.ctx.lineWidth = 1;
+		this.ctx.beginPath();
+		this.ctx.moveTo(this.origin.x + squareSize, this.origin.y);
+		this.ctx.lineTo(this.origin.x + squareSize, this.origin.y - squareSize);
+		this.ctx.lineTo(this.origin.x, this.origin.y - squareSize);
+		this.ctx.stroke();
+	}
+
+	drawPoints() {
+		this.drawPoint(this.origin, this.colors.origin);
+		this.drawPoint(this.pointA, this.colors.pointA);
+		this.drawPoint(this.pointB, this.colors.pointB);
+	}
+
+	drawPoint(point, color) {
+		const isHovered = point === this.hoveredPoint;
+		const isDragging = point === this.draggingPoint;
+		const radius = isDragging ? this.POINT_RADIUS + 2 : this.POINT_RADIUS;
+
+		this.ctx.fillStyle = isHovered ? this.colors.hover : color;
+		this.ctx.beginPath();
+		this.ctx.arc(point.x, point.y, radius, 0, Math.PI * 2);
+		this.ctx.fill();
+
+		if (isDragging) {
+			this.ctx.strokeStyle = color;
+			this.ctx.lineWidth = 2;
+			this.ctx.stroke();
+		}
+	}
+
+	drawLabels() {
+		this.ctx.fillStyle = this.colors.text;
+		this.ctx.font = "bold 14px system-ui";
+
+		this.ctx.fillText(
+			"a",
+			(this.origin.x + this.pointA.x) / 2,
+			this.origin.y + 14
+		);
+		this.ctx.fillText(
+			"b",
+			this.origin.x - 18,
+			(this.origin.y + this.pointB.y) / 2
+		);
+		this.ctx.fillText(
+			"c",
+			(this.pointA.x + this.pointB.x) / 2 + 6,
+			(this.pointA.y + this.pointB.y) / 2
+		);
+	}
+
+	drawMeasurements() {
+		const a = this.distance(this.origin, this.pointA);
+		const b = this.distance(this.origin, this.pointB);
+		const c = this.distance(this.pointA, this.pointB);
+
+		this.ctx.fillStyle = "#666";
+		this.ctx.font = "12px system-ui";
+
+		this.ctx.fillText(
+			`a = ${a.toFixed(1)}`,
+			this.origin.x + 10,
+			this.origin.y - 10
+		);
+		this.ctx.fillText(
+			`b = ${b.toFixed(1)}`,
+			this.origin.x - 40,
+			this.origin.y - 40
+		);
+		this.ctx.fillText(
+			`c = ${c.toFixed(1)}`,
+			this.pointA.x + 10,
+			this.pointA.y - 10
+		);
+
+		const aSquared = a * a;
+		const bSquared = b * b;
+		const cSquared = c * c;
+		const isValid = Math.abs(aSquared + bSquared - cSquared) < 0.1;
+
+		this.ctx.fillStyle = isValid ? "#0f9d58" : "#ea4335";
+		this.ctx.font = "bold 14px system-ui";
+		this.ctx.fillText(`a² + b² = c² ${isValid ? "✓" : "✗"}`, 10, 30);
+	}
+
+	getTriangleData() {
+		return {
+			a: this.distance(this.origin, this.pointA),
+			b: this.distance(this.origin, this.pointB),
+			c: this.distance(this.pointA, this.pointB),
+			points: {
+				origin: { ...this.origin },
+				pointA: { ...this.pointA },
+				pointB: { ...this.pointB },
+			},
+		};
+	}
 }
 
-// Initialize the lesson when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-    new PythagoreanLesson();
-});
+const app = new PythagoreanTheoremApp("pythagorasCanvas");
+
+window.pythagoreanApp = app;
