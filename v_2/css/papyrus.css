@@ -1,0 +1,20 @@
+.papyrus {
+	background-image: url(../assets/img/layout_1536_1024.webp);
+	/* background: hsl(16 100 66 / 1); */
+	/* background-size: cover; */
+	/* background-size: 50%; */
+	background-size: cover;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	/* aspect-ratio: 1536/1024; */
+	/* aspect-ratio: 1.5/1; */
+	position: relative;
+	/* max-height: calc(100% / 1.5); */
+	canvas {
+		/* position: absolute; */
+		/* width: 100%; */
+		/* aspect-ratio: 3/2; */
+		/* inset: 0; */
+	}
+}

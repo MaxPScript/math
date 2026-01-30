@@ -1,0 +1,25 @@
+:root {
+	/* Ancient palette */
+	--papyrus: #f4f1ea;
+	--ink: #1e1b16;
+	--sand: #d8c9a3;
+	--lapis: #1f3c5b;
+	--gold: #b08d57;
+	--terracotta: #8b3a2e;
+
+	/* Typography */
+	--font-ui: "Cinzel", serif;
+	--font-text: "EB Garamond", serif;
+	--font-mono: "Courier New", monospace;
+
+	/* Spacing scale */
+	--s-1: 4px;
+	--s-2: 8px;
+	--s-3: 16px;
+	--s-4: 24px;
+	--s-5: 40px;
+
+	/* Radius */
+	--radius: 6px;
+}
+/* *** */

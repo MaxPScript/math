@@ -1,0 +1,23 @@
+.app {
+	/* display: grid; */
+	/* grid-template-columns: minmax(100%, 100%); */
+	/* grid-template-rows: min-content 1fr min-content; */
+	/* align-items: center; */
+	display: flex;
+	flex-direction: column;
+	max-width: 1536px;
+	height: inherit;
+	margin: auto;
+	background-color: var(--lapis);
+}
+h1,
+h2 {
+	text-align: center;
+}
+section {
+	position: absolute;
+}
+section:has(canvas) {
+	outline: 5px dashed hsl(30 50 90 / 1);
+	/* outline-offset: 5px; */
+}

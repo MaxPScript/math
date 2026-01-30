@@ -1,0 +1,7 @@
+.main {
+	display: grid;
+	flex-grow: 1;
+}
+.closeInteractionGate {
+	/* outline: 5px dashed greenyellow; */
+}

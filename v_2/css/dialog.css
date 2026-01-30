@@ -1,0 +1,39 @@
+.interactionGate[open] {
+	width: 100vw;
+	height: 100vh;
+	max-width: unset;
+	max-height: unset;
+	border: none;
+	/* background-image: url(../assets/img/interaction_gate_croped_croped_977_399.webp); */
+	background-size: 50%;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-color: hsl(0 0 0 / 0);
+	/* aspect-ratio: 977/399; */
+	display: grid;
+	align-content: center;
+	/* place-content: center; */
+	grid-template-columns: 1fr 50% 1fr;
+	& button {
+		background-image: url(../assets/img/interaction_gate_croped_croped_977_399.webp);
+		background-size: cover;
+		/* border: none; */
+		/* outline: none; */
+		grid-column: 2/3;
+		aspect-ratio: 977/399;
+		transition: all 0.2s;
+	}
+	button:hover {
+		cursor: pointer;
+		transform: translateY(-2px);
+		filter: brightness(1.2);
+		/* box-shadow: 0px 1px 2px 2px hsl(0 50 0 / 0.8); */
+	}
+	button:focus-visible {
+		/* outline: 10px dashed greenyellow; */
+	}
+}
+.interactionGate::backdrop {
+	background-color: hsl(0 50 0 / 0.5);
+	backdrop-filter: blur(2px);
+}

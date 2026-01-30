@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>PT 2</title>
+		<link
+			rel="stylesheet"
+			href="./css/reset.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="./css/tokens.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="./css/app.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="./css/main.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="./css/papyrus.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="./css/history.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="./css/dialog.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="./css/media.css"
+		/>
+	</head>
+	<body>
+		<div class="app">
+			<header class="header">
+				<h1>Теорема Пифагора</h1>
+			</header>
+			<main class="main">
+				<section
+					class="papyrus"
+					id="papyrus_id"
+				>
+					<!-- <canvas id="papyrusCanvas_id"></canvas> -->
+					<!-- width="0"
+						height="0" -->
+				</section>
+				<section
+					class="history"
+					data-interactive
+					data-ref="#papyrus_id"
+					data-src-img="../assets/img/layout_1536_1024.webp"
+					data-src-img-width="1536"
+					data-src-img-height="1024"
+					data-cut-x="979"
+					data-cut-y="405"
+					data-cut-w="290"
+					data-cut-h="224"
+					data-sound="./assets/audio/hover_6.wav"
+				></section>
+
+				<!-- <section
+					class="history"
+					id="history_id"
+				></section> -->
+				<section
+					class="definitions"
+					id="definitions_id"
+				></section>
+				<section
+					class="theorem"
+					id="theorem_id"
+				></section>
+				<section
+					class="examples"
+					id="examples_id"
+				></section>
+				<section
+					class="proof"
+					id="proof_id"
+				></section>
+				<section
+					class="interaction"
+					id="interaction_id"
+				></section>
+				<dialog
+					id="interactionGate_id"
+					class="interactionGate"
+					closedby="none"
+				>
+					<button
+						id="closeInteractionGate_id"
+						class="closeInteractionGate"
+						autofocus
+					></button>
+				</dialog>
+			</main>
+			<footer class="footer">&copy;</footer>
+		</div>
+	</body>
+
+	<!-- <script
+		type="module"
+		src="./index.js"
+	></script> -->
+	<!-- <script
+		type="module"
+		src="./index_3.js"
+	></script> -->
+	<script
+		type="module"
+		src="./js/components/interactive_section_class.js"
+	></script>
+</html>
