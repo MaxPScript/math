@@ -147,8 +147,8 @@ class InteractiveSection {
 	}
 	//
 	observeResize() {
-		// this.ro = new ResizeObserver(() => this.computeLayout());
-		// this.ro.observe(this.refEl);
+		this.ro = new ResizeObserver(() => this.computeLayout());
+		this.ro.observe(this.refElement);
 	}
 
 	//
