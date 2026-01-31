@@ -1,10 +1,11 @@
-/* .history {
+[data-interactive] {
 	transition: transform 0.2s;
 	border: 1px dashed hwb(105 4% 11% / 0.638);
 	opacity: 0.9;
 	filter: brightness(1.1);
 	background-color: blueviolet;
+	position: absolute;
 }
-.history:hover {
+[data-interactive]:hover {
 	transform: scale(1.05);
-} */
+}

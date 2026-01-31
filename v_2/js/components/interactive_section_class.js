@@ -168,7 +168,7 @@ class InteractiveSection {
 }
 //
 document
-	.querySelectorAll("section[data-interactive]")
+	.querySelectorAll("[data-interactive]")
 	.forEach((el) => new InteractiveSection(el));
 // DIALOG
 const dialog = document.getElementById("interactionGate_id");
