@@ -7,4 +7,4 @@ document
 	.querySelectorAll("[data-interactive]")
 	.forEach((el) => new InteractiveSection(el));
 
-initDialogGate();
+// initDialogGate();
