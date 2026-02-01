@@ -26,6 +26,10 @@
 		/>
 		<link
 			rel="stylesheet"
+			href="./css/dialog.css"
+		/>
+		<link
+			rel="stylesheet"
 			href="./css/papyrus.css"
 		/>
 		<link
@@ -36,16 +40,14 @@
 			rel="stylesheet"
 			href="./css/history.css"
 		/>
-		<link
-			rel="stylesheet"
-			href="./css/dialog.css"
-		/>
+
 		<link
 			rel="stylesheet"
 			href="./css/media.css"
 		/>
 	</head>
 	<body>
+		<script src="./js/ui/dialogGate.js"></script>
 		<div class="app">
 			<header class="header">
 				<h1>Теорема Пифагора</h1>
@@ -144,7 +146,7 @@
 						data-sound="./assets/audio/hover_6.wav"
 					></button>
 				</section>
-				<dialog
+				<!-- <dialog
 					id="interactionGate_id"
 					class="interactionGate"
 					closedby="none"
@@ -156,33 +158,11 @@
 					>
 						Enter
 					</button>
-				</dialog>
+				</dialog> -->
 			</main>
 			<footer class="footer">&copy;</footer>
 		</div>
 	</body>
-	<script>
-		const dialog = document.getElementById("interactionGate_id");
-		const btn = document.getElementById("closeInteractionGate_id");
-
-		if (!dialog || !btn) {
-			console.log("dialog or btn not found");
-			// return;
-		}
-
-		// window.addEventListener("load", () => {
-		dialog.showModal();
-		btn.focus();
-		// });
-
-		btn.addEventListener("click", () => {
-			if (document.startViewTransition) {
-				document.startViewTransition(() => dialog.close());
-			} else {
-				dialog.close();
-			}
-		});
-	</script>
 	<!-- <script
 		type="module"
 		src="./index.js"
