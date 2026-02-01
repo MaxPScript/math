@@ -99,7 +99,7 @@ class InteractiveSection {
 				this.srcImgRender.h = refElementRect.height;
 			}
 		})();
-		console.log(this.srcImgRender);
+		// console.log(this.srcImgRender);
 		//
 		// console.log(cutNormCoords.x, this.srcImgRender.w, this.srcImgRender.x);
 		this.el.style.left = `${cutNormCoords.x * this.srcImgRender.w + this.srcImgRender.x}px`;
