@@ -15,12 +15,12 @@
 	/* place-content: center; */
 	grid-template-columns: 1fr 50% 1fr;
 	& button {
-		background-image: url(../assets/img/interaction_gate_croped_croped_977_399.webp);
+		background-image: url(../assets/img/gate.webp);
 		background-size: cover;
 		/* border: none; */
 		/* outline: none; */
 		grid-column: 2/3;
-		aspect-ratio: 977/399;
+		aspect-ratio: 1129/617;
 		transition: all 0.2s;
 	}
 	button:hover {
