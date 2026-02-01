@@ -76,7 +76,7 @@ class InteractiveSection {
 			h: 0,
 		};
 		const refElementRect = this.refElement.getBoundingClientRect();
-		console.log(refElementRect);
+		// console.log(refElementRect);
 		const cutNormCoords = {
 			x: this.cutX / this.srcImgWidth,
 			y: this.cutY / this.srcImgHeight,
@@ -101,7 +101,7 @@ class InteractiveSection {
 		})();
 		console.log(this.srcImgRender);
 		//
-		console.log(cutNormCoords.x, this.srcImgRender.w, this.srcImgRender.x);
+		// console.log(cutNormCoords.x, this.srcImgRender.w, this.srcImgRender.x);
 		this.el.style.left = `${cutNormCoords.x * this.srcImgRender.w + this.srcImgRender.x}px`;
 		this.el.style.top = `${cutNormCoords.y * this.srcImgRender.h + this.srcImgRender.y}px`;
 		this.el.style.width = `${cutNormCoords.w * this.srcImgRender.w}px`;
@@ -119,7 +119,10 @@ class InteractiveSection {
 	}
 	//
 	async renderBackground() {
-		if (!this.srcImg) return;
+		if (!this.srcImg) {
+			console.log("Can't found srcImg");
+			return;
+		}
 
 		// const img = new Image();
 		const img = await this.loadImage();
