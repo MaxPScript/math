@@ -18,7 +18,7 @@ class InteractionGate extends HTMLElement {
                     align-content: center;
                     grid-template-columns: 1fr 50% 1fr;
                         button {
-                            background-image: url(../assets/img/gate.webp);
+                            background-image: url(./assets/img/gate.webp);
                             background-size: cover;
                             grid-column: 2/3;
                             aspect-ratio: 1129/617;
