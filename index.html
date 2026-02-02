@@ -26,10 +26,6 @@
 		/>
 		<link
 			rel="stylesheet"
-			href="./css/dialog.css"
-		/>
-		<link
-			rel="stylesheet"
 			href="./css/papyrus.css"
 		/>
 		<link
@@ -45,9 +41,13 @@
 			rel="stylesheet"
 			href="./css/media.css"
 		/>
+		<script
+			type="module"
+			src="./js/web.components/gate.js"
+		></script>
 	</head>
 	<body>
-		<script src="./js/ui/dialogGate.js"></script>
+		<interaction-gate></interaction-gate>
 		<div class="app">
 			<header class="header">
 				<h1>Теорема Пифагора</h1>
@@ -56,11 +56,7 @@
 				<section
 					class="papyrus"
 					id="papyrus_id"
-				>
-					<!-- <canvas id="papyrusCanvas_id"></canvas> -->
-					<!-- width="0"
-						height="0" -->
-				</section>
+				></section>
 				<section class="interactive_layer_for_cuts">
 					<button
 						class="theorem"
@@ -146,35 +142,10 @@
 						data-sound="./assets/audio/hover_6.wav"
 					></button>
 				</section>
-				<!-- <dialog
-					id="interactionGate_id"
-					class="interactionGate"
-					closedby="none"
-				>
-					<button
-						id="closeInteractionGate_id"
-						class="closeInteractionGate"
-						autofocus
-					>
-						Enter
-					</button>
-				</dialog> -->
 			</main>
 			<footer class="footer">&copy;</footer>
 		</div>
 	</body>
-	<!-- <script
-		type="module"
-		src="./index.js"
-	></script> -->
-	<!-- <script
-		type="module"
-		src="./index_3.js"
-	></script> -->
-	<!-- <script
-		type="module"
-		src="./js/components/interactive_section_class.js"
-	></script> -->
 	<script
 		type="module"
 		src="./js/app.js"
