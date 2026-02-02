@@ -3,12 +3,26 @@ import { InteractiveSection } from "./components/interactive_section_class.js";
 const gate = document.querySelector("interaction-gate");
 if (!gate) {
 	console.log("Can not found <interaction-gate> element");
+} else {
+	console.log(gate);
 }
 waitForAppReady().then(() => {
 	gate.unlock();
 });
 function waitForAppReady() {
-	return Promise.all([waitForImages(), waitForAudio()]);
+	return Promise.all([waitForAudio(), waitForImages()]);
+}
+function waitForAudio() {
+	const sounds = ["./assets/audio/hover_6.wav"];
+	return Promise.all(
+		sounds.map((src) => {
+			return new Promise((resolve) => {
+				const audio = new Audio(src);
+				audio.addEventListener("canplaythrough", resolve, { once: true });
+				audio.addEventListener("error", resolve, { once: true });
+			});
+		}),
+	);
 }
 function waitForImages() {
 	const images = [
@@ -26,18 +40,7 @@ function waitForImages() {
 		}),
 	);
 }
-function waitForAudio() {
-	const sounds = ["./assets/audio/hover_6.wav"];
-	return Promise.all(
-		sounds.map((src) => {
-			return new Promise((resolve) => {
-				const audio = new Audio(src);
-				audio.addEventListener("canplaythrough", resolve, { once: true });
-				audio.addEventListener("error", resolve, { once: true });
-			});
-		}),
-	);
-}
+
 //
 document
 	.querySelectorAll("[data-interactive]")
