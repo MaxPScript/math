@@ -5,12 +5,15 @@ export class InteractiveSection {
 		this.el = el;
 		this.refSelector = el.dataset.ref || "#papyrus_id";
 		this.refElement = document.querySelector(this.refSelector);
-
 		if (!this.refElement) {
 			console.warn("Reference element not found:", this.refSelector);
 			return;
 		}
+		this.containerForButtons = document.querySelector(
+			".interactive_layer_for_cuts",
+		);
 
+		//
 		this.init();
 	}
 
@@ -23,10 +26,11 @@ export class InteractiveSection {
 
 	readAttributes() {
 		const d = this.el.dataset;
+		const d_2 = this.containerForButtons.dataset;
 
-		this.srcImg = d.srcImg;
-		this.srcImgWidth = +d.srcImgWidth;
-		this.srcImgHeight = +d.srcImgHeight;
+		this.srcImg = d_2.srcImg;
+		this.srcImgWidth = +d_2.srcImgWidth;
+		this.srcImgHeight = +d_2.srcImgHeight;
 
 		this.cutX = +d.cutX;
 		this.cutY = +d.cutY;
@@ -108,13 +112,16 @@ export class InteractiveSection {
 	}
 
 	attachAudio() {
-		const soundSrc = this.el.dataset.sound;
+		// const soundSrc = this.el.dataset.sound;
+		const soundSrc = this.containerForButtons.dataset.sound;
 		if (!soundSrc) return;
 
 		const audio = new Audio(soundSrc);
 		this.el.addEventListener("mouseenter", () => {
 			audio.currentTime = 0;
-			audio.play().catch(() => {});
+			audio.play().catch(() => {
+				console.log(this.el);
+			});
 		});
 	}
 }
