@@ -45,6 +45,10 @@
 			type="module"
 			src="./js/web.components/gate.js"
 		></script>
+		<script
+			type="module"
+			src="./js/web.components/interactive_btn.js"
+		></script>
 	</head>
 	<body>
 		<interaction-gate></interaction-gate>
@@ -64,6 +68,12 @@
 					data-src-img-height="1024"
 					data-sound="./assets/audio/hover_6.wav"
 				>
+					<interactive-button
+						type="theorem"
+						ref="#papyrus_id"
+						cut="236 180 288 329"
+						aria-label="theorem"
+					></interactive-button>
 					<button
 						class="theorem"
 						id="theorem_id"
