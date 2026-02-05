@@ -4,7 +4,7 @@ const gate = document.querySelector("interaction-gate");
 if (!gate) {
 	console.log("Can not found <interaction-gate> element");
 } else {
-	console.log(gate);
+	// console.log(gate);
 }
 waitForAppReady().then(() => {
 	gate.unlock();
@@ -42,6 +42,6 @@ function waitForImages() {
 }
 
 //
-document
-	.querySelectorAll("[data-interactive]")
-	.forEach((el) => new InteractiveSection(el));
+// document
+// 	.querySelectorAll("[data-interactive]")
+// 	.forEach((el) => new InteractiveSection(el));

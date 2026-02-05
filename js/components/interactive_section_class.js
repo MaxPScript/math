@@ -43,7 +43,7 @@ export class InteractiveSection {
 
 		const srcRatio = this.srcImgWidth / this.srcImgHeight;
 		const refRatio = refRect.width / refRect.height;
-
+		// rendering box
 		const render = { x: 0, y: 0, w: 0, h: 0 };
 
 		if (refRatio > srcRatio) {
@@ -55,7 +55,7 @@ export class InteractiveSection {
 			render.h = render.w / srcRatio;
 			render.y = (refRect.height - render.h) / 2;
 		}
-
+		// normalizing
 		const nx = this.cutX / this.srcImgWidth;
 		const ny = this.cutY / this.srcImgHeight;
 		const nw = this.cutW / this.srcImgWidth;
