@@ -15,4 +15,4 @@ const chartData = resources.map((entry) => ({
 	type: entry.initiatorType,
 	fullEntry: entry,
 }));
-console.log(chartData);
+// console.log(chartData);
