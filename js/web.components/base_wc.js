@@ -22,4 +22,11 @@ export class BaseWC extends HTMLElement {
 	set html(template) {
 		this.shadowRoot.innerHTML = template;
 	}
+	// get element having base image as a bg
+	async getRefElement(selector) {
+		// wait for one frame of rendering...
+		await new Promise((res) => requestAnimationFrame(res));
+		const el = document.querySelector(selector);
+		return el ? el : null;
+	}
 }

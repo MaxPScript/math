@@ -23,30 +23,36 @@ class InteractiveButton extends BaseWC {
 		super();
 		// this.attachShadow({ mode: "open" });
 	}
-	connectedCallback() {
+	async connectedCallback() {
 		const props = this.getProps();
-		console.log(props);
-		this.render(props);
+		// console.log(props);
+		const refElement = await this.getRefElement(props.ref);
+		this.render(props, refElement);
+		this.observeResize(props, refElement);
+		this.attachAudio(props);
 	}
-	render(props) {
+	render(props, refElement) {
 		this.html = `
     <style>
         :host {
             position: absolute !important;
             display: block;
-            z-index: 1;
+            // z-index: 1;
         }
         button {
             all: unset;
+            display: block;
             width: 100%;
             height: 100%;
-            background: hsl(200 50% 50% / 0.4);
+            // background: hsl(200 50% 50% / 0.4);
+            outline: 5px dashed green;
             cursor: pointer;
         }
     </style>
     <button part="button">Click</button>
         `;
 		this.renderBackground(props);
+		this.computeLayout(props, refElement);
 	}
 	//
 	async loadImage(props) {
@@ -68,31 +74,55 @@ class InteractiveButton extends BaseWC {
 		ctx.drawImage(img, x, y, w, h, 0, 0, w, h);
 		this.style.backgroundImage = `url(${canvas.toDataURL("image/webp")})`;
 		this.style.backgroundSize = "cover";
+		//
 	}
-	computeLayout(props) {
-		const refRect = props.refEl.getBoundingClientRect();
-		const srcRatio = this.srcImgWidth / this.srcImgHeight;
-		const refRatio = refRect.width / refRect.height;
-		// rendering box
+	computeLayout(props, refElement) {
+		const [x, y, w, h] = props.cut.split(" ").map(Number);
+		// console.log(props.ref);
+		// console.log(refElement);
+		// const refElement = document.getElementById(`${props.ref}`);
+		const refRect = refElement.getBoundingClientRect();
+		const srcImgRatio = props.imgW / props.imgH;
+		const refElRatio = refRect.width / refRect.height;
+		// rendering box for this
 		const render = { x: 0, y: 0, w: 0, h: 0 };
 
-		if (refRatio > srcRatio) {
+		if (refElRatio > srcImgRatio) {
 			render.h = refRect.height;
-			render.w = render.h * srcRatio;
+			render.w = render.h * srcImgRatio;
 			render.x = (refRect.width - render.w) / 2;
 		} else {
 			render.w = refRect.width;
-			render.h = render.w / srcRatio;
+			render.h = render.w / srcImgRatio;
 			render.y = (refRect.height - render.h) / 2;
 		}
 		// normalizing
-		const nx = x / this.srcImgWidth;
-		const ny = y / this.srcImgHeight;
-		const nw = w / this.srcImgWidth;
-		const nh = h / this.srcImgHeight;
+		const nx = x / props.imgW;
+		const ny = y / props.imgH;
+		const nw = w / props.imgW;
+		const nh = h / props.imgH;
 		//
-		this.render();
+		this.style.left = `${nx * render.w + render.x}px`;
+		this.style.top = `${ny * render.h + render.y}px`;
+		this.style.width = `${nw * render.w}px`;
+		this.style.height = `${nh * render.h}px`;
+		// this.render();
 	}
+	observeResize(props, refElement) {
+		this.ro = new ResizeObserver(() => this.computeLayout(props, refElement));
+		this.ro.observe(refElement);
+	}
+	attachAudio(props) {
+		const soundSrc = props.soundSrc;
+		const audio = new Audio(soundSrc);
+		this.addEventListener("mouseenter", () => {
+			audio.currentTime = 0;
+			audio.play().catch(() => {
+				console.log(this);
+			});
+		});
+	}
+
 	// init() {
 	// }
 	// readAttributes_2() {
