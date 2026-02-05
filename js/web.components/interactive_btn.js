@@ -1,3 +1,5 @@
+import { BaseWC } from "./base_wc.js";
+
 const template = document.createElement("template");
 template.innerHTML = `
     <style>
@@ -16,42 +18,38 @@ template.innerHTML = `
     </style>
     <button part="button"></button>
 `;
-class InteractiveButton extends HTMLElement {
-	constructor(el) {
+class InteractiveButton extends BaseWC {
+	constructor() {
 		super();
-		this.el = el;
-		this.refSelector = el.dataset.ref || "#papyrus_id";
-		this.refElement = document.querySelector(this.refSelector);
-		if (!this.refElement) {
-			console.warn("Reference element not found:", this.refSelector);
-			return;
-		}
-		this.containerForButtons = document.querySelector(
-			".interactive_layer_for_cuts",
-		);
-		//
-		// this.init();
-		//
-		this.attachShadow({ mode: "open" });
-		// this.shadowRoot.append(template.content.cloneNode(true));
-		// this.button = this.shadowRoot.querySelector("button");
-	}
-	//
-	static get observedAttributes() {
-		return ["cut", "aria-label"];
+		// this.attachShadow({ mode: "open" });
 	}
 	connectedCallback() {
-		this.init();
-		// this._applyCut();
-		// this._applyAria();
-		// this._bindEvents();
+		const props = this.getProps();
+		console.log(props);
+		this.render(props);
 	}
-	init() {
-		this.readAttributes();
-		this.observeResize();
-		this.attachAudio();
+	render(props) {
+		this.html = `
+    <style>
+        :host {
+            position: absolute !important;
+            display: block;
+            z-index: 1;
+        }
+        button {
+            all: unset;
+            width: 100%;
+            height: 100%;
+            background: hsl(200 50% 50% / 0.4);
+            cursor: pointer;
+        }
+    </style>
+    <button part="button">Click</button>
+        `;
 	}
-	readAttributes() {
+	// init() {
+	// }
+	readAttributes_2() {
 		const d = this.el.dataset;
 		const d_2 = this.containerForButtons.dataset;
 

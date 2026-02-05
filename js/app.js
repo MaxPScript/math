@@ -42,6 +42,6 @@ function waitForImages() {
 }
 
 //
-document
-	.querySelectorAll("[data-interactive]")
-	.forEach((el) => new InteractiveSection(el));
+// document
+// 	.querySelectorAll("[data-interactive]")
+// 	.forEach((el) => new InteractiveSection(el));
