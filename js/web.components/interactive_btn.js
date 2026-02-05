@@ -46,27 +46,31 @@ class InteractiveButton extends BaseWC {
     </style>
     <button part="button">Click</button>
         `;
+		this.renderBackground(props);
 	}
-	// init() {
-	// }
-	readAttributes_2() {
-		const d = this.el.dataset;
-		const d_2 = this.containerForButtons.dataset;
-
-		this.srcImg = d_2.srcImg;
-		this.srcImgWidth = +d_2.srcImgWidth;
-		this.srcImgHeight = +d_2.srcImgHeight;
-
-		const cut = this.getAttribute("cut");
-		const [x, y, w, h] = cut.split(" ").map(Number);
-		this.computeLayout(x, y, w, h);
-		// this.cutX = +d.cutX;
-		// this.cutY = +d.cutY;
-		// this.cutW = +d.cutW;
-		// this.cutH = +d.cutH;
+	//
+	async loadImage(props) {
+		if (this._img) return this._img;
+		const img = new Image();
+		img.src = props.imgSrc;
+		await img.decode();
+		this._img = img;
+		return img;
 	}
-	computeLayout(x, y, w, h) {
-		const refRect = this.refElement.getBoundingClientRect();
+	async renderBackground(props) {
+		const img = await this.loadImage(props);
+		const canvas = document.createElement("canvas");
+		const [x, y, w, h] = props.cut.split(" ").map(Number);
+		// console.log(x, y, w, h);
+		canvas.width = w;
+		canvas.height = h;
+		const ctx = canvas.getContext("2d");
+		ctx.drawImage(img, x, y, w, h, 0, 0, w, h);
+		this.style.backgroundImage = `url(${canvas.toDataURL("image/webp")})`;
+		this.style.backgroundSize = "cover";
+	}
+	computeLayout(props) {
+		const refRect = props.refEl.getBoundingClientRect();
 		const srcRatio = this.srcImgWidth / this.srcImgHeight;
 		const refRatio = refRect.width / refRect.height;
 		// rendering box
@@ -89,15 +93,26 @@ class InteractiveButton extends BaseWC {
 		//
 		this.render();
 	}
+	// init() {
+	// }
+	// readAttributes_2() {
+	// const d = this.el.dataset;
+	// const d_2 = this.containerForButtons.dataset;
+
+	// this.srcImg = d_2.srcImg;
+	// this.srcImgWidth = +d_2.srcImgWidth;
+	// this.srcImgHeight = +d_2.srcImgHeight;
+
+	// const cut = this.getAttribute("cut");
+	// const [x, y, w, h] = cut.split(" ").map(Number);
+	// this.computeLayout(x, y, w, h);
+	// this.cutX = +d.cutX;
+	// this.cutY = +d.cutY;
+	// this.cutW = +d.cutW;
+	// this.cutH = +d.cutH;
+	// }
 	//
-	async loadImage() {
-		if (this._img) return this._img;
-		const img = new Image();
-		img.src = this.srcImg;
-		await img.decode();
-		this._img = img;
-		return img;
-	}
+
 	// _applyCut() {
 	// 	const cut = this.getAttribute("cut");
 	// 	if (!cut) return;
