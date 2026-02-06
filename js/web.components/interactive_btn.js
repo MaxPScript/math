@@ -118,7 +118,7 @@ class InteractiveButton extends BaseWC {
 		this.addEventListener("mouseenter", () => {
 			audio.currentTime = 0;
 			audio.play().catch(() => {
-				console.log(this);
+				console.log("audio issue");
 			});
 		});
 	}
