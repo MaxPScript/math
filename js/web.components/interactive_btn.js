@@ -24,6 +24,7 @@ class InteractiveButton extends BaseWC {
 		// this.attachShadow({ mode: "open" });
 	}
 	async connectedCallback() {
+		this.setAttribute("role", "button");
 		const props = this.getProps();
 		// console.log(props);
 		const refElement = await this.getRefElement();
@@ -116,62 +117,12 @@ class InteractiveButton extends BaseWC {
 		const soundSrc = props.soundSrc;
 		const audio = new Audio(soundSrc);
 		this.addEventListener("mouseenter", () => {
+			// console.log("mouseenter here");
 			audio.currentTime = 0;
 			audio.play().catch(() => {
 				console.log("audio issue");
 			});
 		});
 	}
-
-	// init() {
-	// }
-	// readAttributes_2() {
-	// const d = this.el.dataset;
-	// const d_2 = this.containerForButtons.dataset;
-
-	// this.srcImg = d_2.srcImg;
-	// this.srcImgWidth = +d_2.srcImgWidth;
-	// this.srcImgHeight = +d_2.srcImgHeight;
-
-	// const cut = this.getAttribute("cut");
-	// const [x, y, w, h] = cut.split(" ").map(Number);
-	// this.computeLayout(x, y, w, h);
-	// this.cutX = +d.cutX;
-	// this.cutY = +d.cutY;
-	// this.cutW = +d.cutW;
-	// this.cutH = +d.cutH;
-	// }
-	//
-
-	// _applyCut() {
-	// 	const cut = this.getAttribute("cut");
-	// 	if (!cut) return;
-	// 	const [x, y, w, h] = cut.split(" ").map(Number);
-	// 	this.style.left = x + "px";
-	// 	this.style.top = y + "px";
-	// 	this.style.width = w + "px";
-	// 	this.style.height = h + "px";
-	// }
-	// _applyAria() {
-	// 	const label = this.getAttribute("aria-label");
-	// 	if (label) {
-	// 		this.button.setAttribute("aria-label", label);
-	// 	}
-	// }
-	// _bindEvents() {
-	// 	this.button.addEventListener("click", () => {
-	// 		this.dispatchEvent(
-	// 			new CustomEvent("interactive-activate", {
-	// 				bubbles: true,
-	// 				composed: true,
-	// 				detail: {
-	// 					type: this.getAttribute("type"),
-	// 					ref: this.getAttribute("ref"),
-	// 					cut: this.getAttribute("cut"),
-	// 				},
-	// 			}),
-	// 		);
-	// 	});
-	// }
 }
 customElements.define("interactive-button", InteractiveButton);

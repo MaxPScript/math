@@ -1,3 +1,3 @@
 ### Intent
 
-An interactive application for learning geometry.
+An interactive application for learning math.

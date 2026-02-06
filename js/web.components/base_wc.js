@@ -1,12 +1,13 @@
+import { config } from "../config.js";
 // imgSrc: "../../assets/img/layout_1536_1024.webp",
 // imgSrc: "../assets/img/layout_1536_1024.webp",
-const MEDIA = {
-	imgRefEl: "#papyrus_id",
-	imgSrc: "assets/img/layout_1536_1024.webp",
-	imgW: 1536,
-	imgH: 1024,
-	soundSrc: "assets/audio/hover_6.wav",
-};
+// const MEDIA = {
+// 	imgRefEl: "#papyrus_id",
+// 	imgSrc: "assets/img/layout_1536_1024.webp",
+// 	imgW: 1536,
+// 	imgH: 1024,
+// 	soundSrc: "assets/audio/hover_6.wav",
+// };
 //
 export class BaseWC extends HTMLElement {
 	constructor() {
@@ -20,7 +21,7 @@ export class BaseWC extends HTMLElement {
 				props[name] = this.getAttribute(name);
 			}
 		}
-		return { ...props, ...this.dataset, ...MEDIA };
+		return { ...props, ...this.dataset, ...config.media };
 	}
 	set html(template) {
 		this.shadowRoot.innerHTML = template;
@@ -29,7 +30,7 @@ export class BaseWC extends HTMLElement {
 	async getRefElement() {
 		// wait for one frame of rendering...
 		await new Promise((res) => requestAnimationFrame(res));
-		const el = document.querySelector(MEDIA.imgRefEl);
+		const el = document.querySelector(config.media.imgRefEl);
 		return el ? el : null;
 	}
 }
