@@ -26,7 +26,7 @@ class InteractiveButton extends BaseWC {
 	async connectedCallback() {
 		const props = this.getProps();
 		// console.log(props);
-		const refElement = await this.getRefElement(props.ref);
+		const refElement = await this.getRefElement();
 		this.render(props, refElement);
 		this.observeResize(props, refElement);
 		this.attachAudio(props);

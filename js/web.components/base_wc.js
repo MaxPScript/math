@@ -1,4 +1,5 @@
 const MEDIA = {
+	imgRefEl: "#papyrus_id",
 	imgSrc: "../../assets/img/layout_1536_1024.webp",
 	imgW: 1536,
 	imgH: 1024,
@@ -23,10 +24,10 @@ export class BaseWC extends HTMLElement {
 		this.shadowRoot.innerHTML = template;
 	}
 	// get element having base image as a bg
-	async getRefElement(selector) {
+	async getRefElement() {
 		// wait for one frame of rendering...
 		await new Promise((res) => requestAnimationFrame(res));
-		const el = document.querySelector(selector);
+		const el = document.querySelector(MEDIA.imgRefEl);
 		return el ? el : null;
 	}
 }
