@@ -1,23 +1,23 @@
 import { BaseWC } from "./base_wc.js";
+import { assetCache } from "../helpers/asset_cache.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
     <style>
-        :host {
-            position: absolute;
-            display: block;
-            z-index: 1;
-        }
+	@layer webcomponents {
         button {
             all: unset;
+            display: block;
             width: 100%;
             height: 100%;
-            background: hsl(200 50% 50% / 0.4);
+            // background: hsl(200 50% 50% / 0.4);
+            outline: 5px dashed green;
             cursor: pointer;
         }
+			}
     </style>
     <button part="button"></button>
-`;
+        `;
 class InteractiveButton extends BaseWC {
 	constructor() {
 		super();
@@ -33,25 +33,7 @@ class InteractiveButton extends BaseWC {
 		this.attachAudio(props);
 	}
 	render(props, refElement) {
-		this.html = `
-    <style>
-        :host {
-            position: absolute !important;
-            display: block;
-            // z-index: 1;
-        }
-        button {
-            all: unset;
-            display: block;
-            width: 100%;
-            height: 100%;
-            // background: hsl(200 50% 50% / 0.4);
-            outline: 5px dashed green;
-            cursor: pointer;
-        }
-    </style>
-    <button part="button">Click</button>
-        `;
+		this.html = template;
 		this.renderBackground(props);
 		this.computeLayout(props, refElement);
 	}
@@ -79,9 +61,6 @@ class InteractiveButton extends BaseWC {
 	}
 	computeLayout(props, refElement) {
 		const [x, y, w, h] = props.cut.split(" ").map(Number);
-		// console.log(props.ref);
-		// console.log(refElement);
-		// const refElement = document.getElementById(`${props.ref}`);
 		const refRect = refElement.getBoundingClientRect();
 		const srcImgRatio = props.imgW / props.imgH;
 		const refElRatio = refRect.width / refRect.height;
@@ -114,12 +93,12 @@ class InteractiveButton extends BaseWC {
 		this.ro.observe(refElement);
 	}
 	attachAudio(props) {
-		const soundSrc = props.soundSrc;
-		const audio = new Audio(soundSrc);
+		const soundSrc = assetCache.sounds.get(props.soundSrc);
 		this.addEventListener("mouseenter", () => {
-			// console.log("mouseenter here");
-			audio.currentTime = 0;
-			audio.play().catch(() => {
+			if (!soundSrc) return;
+			const playInstance = soundSrc.cloneNode();
+			playInstance.currentTime = 0;
+			playInstance.play().catch(() => {
 				console.log("audio issue");
 			});
 		});

@@ -23,8 +23,13 @@ export class BaseWC extends HTMLElement {
 		}
 		return { ...props, ...this.dataset, ...config.media };
 	}
-	set html(template) {
-		this.shadowRoot.innerHTML = template;
+	set html(content) {
+		this.shadowRoot.innerHTML = "";
+		if (content instanceof HTMLTemplateElement) {
+			this.shadowRoot.appendChild(content.content.cloneNode(true));
+		} else {
+			this.shadowRoot.innerHTML = content;
+		}
 	}
 	// get element having base image as a bg
 	async getRefElement() {
