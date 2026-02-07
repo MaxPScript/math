@@ -7,12 +7,12 @@ class InteractionGate extends HTMLElement {
                 dialog[open] {
                     width: 100vw;
                     height: 100vh;
-                    max-width: unset;
-                    max-height: unset;
+                    // max-width: unset;
+                    // max-height: unset;
                     border: none;
-                    background-size: 50%;
-                    background-position: center;
-                    background-repeat: no-repeat;
+                    // background-size: 50%;
+                    // background-position: center;
+                    // background-repeat: no-repeat;
                     background-color: hsl(0 0 0 / 0);
                     display: grid;
                     align-content: center;
@@ -39,8 +39,8 @@ class InteractionGate extends HTMLElement {
             </style>
             <dialog>
 				<button autofocus><span>Enter</span></button>
-                </dialog>
-                `;
+            </dialog>
+            `;
 	}
 	connectedCallback() {
 		this.dialog = this.shadowRoot.querySelector("dialog");
